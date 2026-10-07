@@ -10,7 +10,7 @@ const JWT_SECRET = process.env.JWT_SECRET || "inseguro";
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 10 * 1024 * 1024, // 10MB
+    app.use(express.json({ limit: '5mb' }));
   },
   fileFilter: (req, file, cb) => {
     const allowedMimes = [

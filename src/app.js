@@ -16,9 +16,13 @@ const tipoExamenRoutes = require("./routes/tipo-examen");
 const auditRoutes = require("./routes/audit");
 const rolesRoutes = require("./routes/roles");
 
-const app = express();
+app.disable('x-powered-by');
 
-app.use(cors());
+const cors = require('cors');
+
+app.use(cors({
+  origin: process.env.CLIENT_URL || 'http://localhost:3333' // Reemplaza por la URL de tu frontend
+}));
 app.use(express.json());
 app.use(morgan("dev"));
 

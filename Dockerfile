@@ -1,24 +1,26 @@
+# 1. Imagen base (siempre debe ser la primera instrucción)
 FROM node:18-alpine
 
+# 2. Directorio de trabajo
 WORKDIR /app
 
-# Copiar archivos de dependencias
+# 3. Copiar dependencias e instalarlas
 COPY package*.json ./
+RUN npm ci --ignore-scripts
 
-# Instalar dependencias
-RUN npm ci --only=production
-
-# Copiar código de la aplicación
+# 4. Copiar código de la aplicación
 COPY src/ ./src/
 COPY sql/ ./sql/
 COPY uploads/ ./uploads/
 
-# Crear directorio para uploads si no existe
-RUN mkdir -p uploads/contracts
+# 5. Crear directorio de subidas y dar permisos al usuario node
+RUN mkdir -p uploads/contracts && chown -R node:node /app
 
-# Exponer puerto
+# 6. Cambiar a usuario no-root (satisface la regla de SonarQube)
+USER node
+
+# 7. Puerto expuesto
 EXPOSE 3000
 
-# Comando para iniciar la aplicación
+# 8. Comando para iniciar
 CMD ["node", "src/app.js"]
-
